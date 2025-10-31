@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Algoritma & Pemrograman</title>
+    <style>
+        /* CSS untuk Tampilan Mobile */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* --- Halaman Login --- */
+        #login-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 50px;
+        }
+        #login-container h2 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Kontainer Aplikasi Utama (Setelah Login) --- */
+        #app-container {
+            display: none; /* Disembunyikan secara default */
+        }
+        
+        /* Header */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        #student-info, #datetime {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Navigasi Menu */
+        nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        nav button {
+            background-color: white;
+            border: 2px solid #007bff;
+            color: #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        nav button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Area Konten */
+        #content-area {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            min-height: 200px;
+        }
+        #content-area h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        /* Style untuk iframe (tool eksternal) */
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        /* Style untuk materi (poin-poin) */
+        ul.materi-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul.materi-list li {
+            background-color: #e6f2ff;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+
+        /* Tombol Utility */
+        .utility-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .utility-buttons button {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .utility-buttons button#logout-btn {
+            background-color: #dc3545;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="login-container">
+            <h2>👋 Selamat Datang!</h2>
+            <p>Silakan masukkan nama dan kelas Anda untuk memulai.</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="student-name">Nama Lengkap:</label>
+                    <input type="text" id="student-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="student-class">Kelas (Contoh: 7A):</label>
+                    <input type="text" id="student-class" required>
+                </div>
+                <button type="submit" class="btn">Mulai Belajar</button>
+            </form>
+        </div>
+
+        <div id="app-container">
+            <header>
+                <h1>Algoritma & Pemrograman</h1>
+                <div id="student-info"></div>
+                <div id="datetime"></div>
+            </header>
+
+            <nav>
+                <button onclick="loadContent('materi')">📜 Materi</button>
+                <button onclick="loadContent('video')">🎬 Video</button>
+                <button onclick="loadContent('simulasi')">🤖 Simulasi</button>
+                <button onclick="loadContent('kuis')">❓ Kuis</button>
+                <button onclick="loadContent('latihan')">💻 Latihan (Tools)</button>
+                <button onclick="loadContent('guru')">👩‍🏫 Portal Guru</button>
+            </nav>
+
+            <main>
+                <div id="content-area">
+                    <h3>Selamat Datang!</h3>
+                    <p>Pilih menu di atas untuk mulai belajar. Semua progres dan latihan Anda akan tercatat.</p>
+                    
+                </div>
+            </main>
+
+            <div class="utility-buttons">
+                <button id="logout-btn">Kembali ke Login</button>
+                <button id="report-btn" onclick="alert('Fitur Rapor Mini sedang dalam pengembangan.')">Cetak Rapor Mini</button>
+            </div>
+        </div>
+        
+        <footer>
+            Dibuat dengan Gemini & Ananda Putri Syaviri
+        </footer>
+
+    </div>
+
+    <script>
+        // === VARIABEL GLOBAL ===
+        const loginContainer = document.getElementById('login-container');
+        const appContainer = document.getElementById('app-container');
+        const loginForm = document.getElementById('login-form');
+        const studentInfo = document.getElementById('student-info');
+        const datetimeDiv = document.getElementById('datetime');
+        const contentArea = document.getElementById('content-area');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // === FUNGSI UTAMA ===
+
+        // 1. Cek status login saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            updateTime();
+            setInterval(updateTime, 60000); // Update waktu setiap menit
+        });
+
+        // 2. Fungsi untuk cek status login
+        function checkLoginStatus() {
+            const studentName = localStorage.getItem('studentName');
+            const studentClass = localStorage.getItem('studentClass');
+
+            if (studentName && studentClass) {
+                // Jika sudah login, tampilkan aplikasi
+                loginContainer.style.display = 'none';
+                appContainer.style.display = 'block';
+                studentInfo.textContent = `Siswa: ${studentName} | Kelas: ${studentClass}`;
+            } else {
+                // Jika belum login, tampilkan form login
+                loginContainer.style.display = 'block';
+                appContainer.style.display = 'none';
+            }
+        }
+
+        // 3. Fungsi untuk handle login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Mencegah form reload halaman
+            
+            const name = document.getElementById('student-name').value;
+            const studentClass = document.getElementById('student-class').value;
+            const loginTime = new Date().toLocaleString('id-ID');
+
+            // Simpan ke localStorage (penyimpanan browser)
+            localStorage.setItem('studentName', name);
+            localStorage.setItem('studentClass', studentClass);
+            
+            console.log(`Login berhasil: ${name}, ${studentClass}, Waktu: ${loginTime}`);
+
+            // --- INI ADALAH BAGIAN UNTUK DATABASE (VERSI LANJUTAN) ---
+            // Di aplikasi nyata, Anda akan mengirim data ini ke server/Firebase
+            // Contoh (pseudocode):
+            // sendToFirebase({ 
+            //    nama: name, 
+            //    kelas: studentClass, 
+            //    waktu: loginTime 
+            // });
+            // --- Akhir bagian database ---
+
+            alert(`Selamat datang, ${name}!`);
+            checkLoginStatus(); // Cek ulang status untuk tampilkan aplikasi
+        });
+
+        // 4. Fungsi untuk Logout / Kembali ke Login
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin keluar dan kembali ke halaman login?')) {
+                localStorage.removeItem('studentName');
+                localStorage.removeItem('studentClass');
+                checkLoginStatus(); // Cek ulang status untuk tampilkan login
+                // Kembali ke halaman home konten
+                loadContent('home');
+            }
+        });
+
+        // 5. Fungsi untuk memuat konten (Navigasi SPA Sederhana)
+        function loadContent(page) {
+            contentArea.innerHTML = ''; // Kosongkan area konten
+            
+            if (page === 'home') {
+                 contentArea.innerHTML = `
+                    <h3>Selamat Datang!</h3>
+                    <p>Pilih menu di atas untuk mulai belajar. Semua progres dan latihan Anda akan tercatat.</p>`;
+            }
+            else if (page === 'materi') {
+                contentArea.innerHTML = `
+                    <h3>📜 Materi: Apa itu Algoritma?</h3>
+                    <p>Algoritma adalah **urutan langkah-langkah logis** untuk menyelesaikan suatu masalah.</p>
+                    <p>Hal penting yang harus diingat:</p>
+                    <ul class="materi-list">
+                        <li><strong>Jelas:</strong> Setiap langkah harus jelas dan tidak membingungkan.</li>
+                        <li><strong>Terurut:</strong> Langkah-langkah harus dilakukan secara berurutan.</li>
+                        <li><strong>Terbatas:</strong> Algoritma harus berakhir setelah sejumlah langkah.</li>
+                        <li><strong>Tujuan:</strong> Punya tujuan akhir (solusi).</li>
+                    </ul>
+                    
+                    <h3>Apa itu Pemrograman?</h3>
+                    <p>Pemrograman adalah proses menulis, menguji, dan memperbaiki (debug) kode yang memberitahu komputer apa yang harus dilakukan. Kode ini adalah implementasi dari algoritma.</p>`;
+            } 
+            else if (page === 'video') {
+                contentArea.innerHTML = `
+                    <h3>🎬 Video Pembelajaran</h3>
+                    <p>Tonton video di bawah ini untuk memahami konsep dasar algoritma dengan cara yang seru!</p>
+                    <iframe 
+                        src="https://www.youtube.com/embed/videoseries?list=PLR8w3-22jYvG2TAbJk2GAb_ItGAYN2_3r" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <p>(Ini adalah contoh playlist 'Hour of Code' dari Code.org)</p>`;
+            }
+            else if (page === 'simulasi') {
+                contentArea.innerHTML = `
+                    <h3>🤖 Simulasi Logika (Seperti LightBot)</h3>
+                    <p>Karena LightBot berbasis Flash sudah tidak bisa digunakan, kita akan menggunakan platform visual yang serupa untuk melatih logika.</p>
+                    <p>Silakan coba platform <strong>Blockly Games</strong>. Ini melatih logika pemrograman visual yang sama persis.</p>
+                    <button class="btn" onclick="openExternal('https://blockly.games/maze?lang=id')">Buka Blockly Maze (Mirip LightBot)</button>
+                    <br><br>
+                    <p><strong>PENTING:</strong> Membuat simulasi yang *persis* seperti LightBot adalah proyek pengembangan yang sangat besar. Menggunakan tool yang sudah ada seperti Blockly adalah alternatif terbaik.</p>`;
+            }
+            else if (page === 'kuis') {
+                contentArea.innerHTML = `
+                    <h3>❓ Kuis Cepat</h3>
+                    <p>Fitur kuis interaktif sedang dalam pengembangan. Ini akan menyimpan skormu!</p>
+                    <form id="quiz-form">
+                        <p><strong>1. Apa nama urutan langkah-langkah logis?</strong></p>
+                        <input type="radio" name="q1" value="a"> Algoritma<br>
+                        <input type="radio" name="q1" value="b"> Program<br>
+                        <input type="radio" name="q1" value="c"> Kode<br>
+                        <br>
+                        <button type="submit" class="btn" style="width: auto;">Kirim Jawaban</button>
+                    </form>`;
+                // Tambahkan JS untuk memproses kuis di sini
+            }
+            else if (page === 'latihan') {
+                contentArea.innerHTML = `
+                    <h3>💻 Latihan (Tools Eksternal)</h3>
+                    <p>Gunakan platform berikut untuk latihan mandiri. Ini adalah platform yang akan sering kita gunakan:</p>
+                    <button class="btn" onclick="openExternal('https://compute-it.toxicode.fr/')">Latihan Algoritma (Toxicode)</button>
+                    <br><br>
+                    <button class="btn" onclick="openExternal('https://code.org/hourofcode/overview')">Latihan (Hour of Code)</button>
+                    <br><br>
+                    <button class="btn" onclick="openExternal('https://blockly.games/')">Latihan (Blockly Games)</button>`;
+            }
+            else if (page === 'guru') {
+                 contentArea.innerHTML = `
+                    <h3>👩‍🏫 Portal Guru</h3>
+                    <p>Ini adalah area khusus untuk guru memonitor progres siswa, memberi nilai, dan feedback.</p>
+                    <p>Untuk saat ini, fitur ini memerlukan <strong>database dan sistem login backend</strong> yang aman (seperti Firebase Authentication) dan tidak bisa dijalankan hanya dengan HTML.</p>
+                    <button class="btn" style="background-color: #28a745;" onclick="alert('Login guru memerlukan pengaturan backend terpisah.')">Masuk Sebagai Guru (Demo)</button>`;
+            }
+        }
+
+        // 6. Fungsi helper untuk membuka link di tab baru
+        function openExternal(url) {
+            window.open(url, '_blank');
+        }
+
+        // 7. Fungsi untuk update waktu dan tanggal
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            datetimeDiv.textContent = now.toLocaleString('id-ID', options);
+        }
+
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Algoritma & Pemrograman</title>
+    <style>
+        /* CSS untuk Tampilan Mobile */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* --- Halaman Login --- */
+        #login-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-top: 50px;
+        }
+        #login-container h2 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Kontainer Aplikasi Utama (Setelah Login) --- */
+        #app-container {
+            display: none; /* Disembunyikan secara default */
+        }
+        
+        /* Header */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        #student-info, #datetime {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Navigasi Menu */
+        nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        nav button {
+            background-color: white;
+            border: 2px solid #007bff;
+            color: #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        nav button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Area Konten */
+        #content-area {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            min-height: 200px;
+        }
+        #content-area h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        /* Style untuk iframe (tool eksternal) */
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        /* Style untuk materi (poin-poin) */
+        ul.materi-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul.materi-list li {
+            background-color: #e6f2ff;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+
+        /* Tombol Utility */
+        .utility-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .utility-buttons button {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .utility-buttons button#logout-btn {
+            background-color: #dc3545;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="login-container">
+            <h2>👋 Selamat Datang!</h2>
+            <p>Silakan masukkan nama dan kelas Anda untuk memulai.</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="student-name">Nama Lengkap:</label>
+                    <input type="text" id="student-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="student-class">Kelas (Contoh: 7A):</label>
+                    <input type="text" id="student-class" required>
+                </div>
+                <button type="submit" class="btn">Mulai Belajar</button>
+            </form>
+        </div>
+
+        <div id="app-container">
+            <header>
+                <h1>Algoritma & Pemrograman</h1>
+                <div id="student-info"></div>
+                <div id="datetime"></div>
+            </header>
+
+            <nav>
+                <button onclick="loadContent('materi')">📜 Materi</button>
+                <button onclick="loadContent('video')">🎬 Video</button>
+                <button onclick="loadContent('simulasi')">🤖 Simulasi</button>
+                <button onclick="loadContent('kuis')">❓ Kuis</button>
+                <button onclick="loadContent('latihan')">💻 Latihan (Tools)</button>
+                <button onclick="loadContent('guru')">👩‍🏫 Portal Guru</button>
+            </nav>
+
+            <main>
+                <div id="content-area">
+                    <h3>Selamat Datang!</h3>
+                    <p>Pilih menu di atas untuk mulai belajar. Semua progres dan latihan Anda akan tercatat.</p>
+                    
+                </div>
+            </main>
+
+            <div class="utility-buttons">
+                <button id="logout-btn">Kembali ke Login</button>
+                <button id="report-btn" onclick="alert('Fitur Rapor Mini sedang dalam pengembangan.')">Cetak Rapor Mini</button>
+            </div>
+        </div>
+        
+        <footer>
+            Dibuat dengan Gemini & Ananda Putri Syaviri
+        </footer>
+
+    </div>
+
+    <script>
+        // === VARIABEL GLOBAL ===
+        const loginContainer = document.getElementById('login-container');
+        const appContainer = document.getElementById('app-container');
+        const loginForm = document.getElementById('login-form');
+        const studentInfo = document.getElementById('student-info');
+        const datetimeDiv = document.getElementById('datetime');
+        const contentArea = document.getElementById('content-area');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // === FUNGSI UTAMA ===
+
+        // 1. Cek status login saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            updateTime();
+            setInterval(updateTime, 60000); // Update waktu setiap menit
+        });
+
+        // 2. Fungsi untuk cek status login
+        function checkLoginStatus() {
+            const studentName = localStorage.getItem('studentName');
+            const studentClass = localStorage.getItem('studentClass');
+
+            if (studentName && studentClass) {
+                // Jika sudah login, tampilkan aplikasi
+                loginContainer.style.display = 'none';
+                appContainer.style.display = 'block';
+                studentInfo.textContent = `Siswa: ${studentName} | Kelas: ${studentClass}`;
+            } else {
+                // Jika belum login, tampilkan form login
+                loginContainer.style.display = 'block';
+                appContainer.style.display = 'none';
+            }
+        }
+
+        // 3. Fungsi untuk handle login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Mencegah form reload halaman
+            
+            const name = document.getElementById('student-name').value;
+            const studentClass = document.getElementById('student-class').value;
+            const loginTime = new Date().toLocaleString('id-ID');
+
+            // Simpan ke localStorage (penyimpanan browser)
+            localStorage.setItem('studentName', name);
+            localStorage.setItem('studentClass', studentClass);
+            
+            console.log(`Login berhasil: ${name}, ${studentClass}, Waktu: ${loginTime}`);
+
+            // --- INI ADALAH BAGIAN UNTUK DATABASE (VERSI LANJUTAN) ---
+            // Di aplikasi nyata, Anda akan mengirim data ini ke server/Firebase
+            // Contoh (pseudocode):
+            // sendToFirebase({ 
+            //    nama: name, 
+            //    kelas: studentClass, 
+            //    waktu: loginTime 
+            // });
+            // --- Akhir bagian database ---
+
+            alert(`Selamat datang, ${name}!`);
+            checkLoginStatus(); // Cek ulang status untuk tampilkan aplikasi
+        });
+
+        // 4. Fungsi untuk Logout / Kembali ke Login
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin keluar dan kembali ke halaman login?')) {
+                localStorage.removeItem('studentName');
+                localStorage.removeItem('studentClass');
+                checkLoginStatus(); // Cek ulang status untuk tampilkan login
+                // Kembali ke halaman home konten
+                loadContent('home');
+            }
+        });
+
+        // 5. Fungsi untuk memuat konten (Navigasi SPA Sederhana)
+        function loadContent(page) {
+            contentArea.innerHTML = ''; // Kosongkan area konten
+            
+            if (page === 'home') {
+                 contentArea.innerHTML = `
+                    <h3>Selamat Datang!</h3>
+                    <p>Pilih menu di atas untuk mulai belajar. Semua progres dan latihan Anda akan tercatat.</p>`;
+            }
+            else if (page === 'materi') {
+                contentArea.innerHTML = `
+                    <h3>📜 Materi: Apa itu Algoritma?</h3>
+                    <p>Algoritma adalah **urutan langkah-langkah logis** untuk menyelesaikan suatu masalah.</p>
+                    <p>Hal penting yang harus diingat:</p>
+                    <ul class="materi-list">
+                        <li><strong>Jelas:</strong> Setiap langkah harus jelas dan tidak membingungkan.</li>
+                        <li><strong>Terurut:</strong> Langkah-langkah harus dilakukan secara berurutan.</li>
+                        <li><strong>Terbatas:</strong> Algoritma harus berakhir setelah sejumlah langkah.</li>
+                        <li><strong>Tujuan:</strong> Punya tujuan akhir (solusi).</li>
+                    </ul>
+                    
+                    <h3>Apa itu Pemrograman?</h3>
+                    <p>Pemrograman adalah proses menulis, menguji, dan memperbaiki (debug) kode yang memberitahu komputer apa yang harus dilakukan. Kode ini adalah implementasi dari algoritma.</p>`;
+            } 
+            else if (page === 'video') {
+                contentArea.innerHTML = `
+                    <h3>🎬 Video Pembelajaran</h3>
+                    <p>Tonton video di bawah ini untuk memahami konsep dasar algoritma dengan cara yang seru!</p>
+                    <iframe 
+                        src="https://www.youtube.com/embed/videoseries?list=PLR8w3-22jYvG2TAbJk2GAb_ItGAYN2_3r" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                    <p>(Ini adalah contoh playlist 'Hour of Code' dari Code.org)</p>`;
+            }
+            else if (page === 'simulasi') {
+                contentArea.innerHTML = `
+                    <h3>🤖 Simulasi Logika (Seperti LightBot)</h3>
+                    <p>Karena LightBot berbasis Flash sudah tidak bisa digunakan, kita akan menggunakan platform visual yang serupa untuk melatih logika.</p>
+                    <p>Silakan coba platform <strong>Blockly Games</strong>. Ini melatih logika pemrograman visual yang sama persis.</p>
+                    <button class="btn" onclick="openExternal('https://blockly.games/maze?lang=id')">Buka Blockly Maze (Mirip LightBot)</button>
+                    <br><br>
+                    <p><strong>PENTING:</strong> Membuat simulasi yang *persis* seperti LightBot adalah proyek pengembangan yang sangat besar. Menggunakan tool yang sudah ada seperti Blockly adalah alternatif terbaik.</p>`;
+            }
+            else if (page === 'kuis') {
+                contentArea.innerHTML = `
+                    <h3>❓ Kuis Cepat</h3>
+                    <p>Fitur kuis interaktif sedang dalam pengembangan. Ini akan menyimpan skormu!</p>
+                    <form id="quiz-form">
+                        <p><strong>1. Apa nama urutan langkah-langkah logis?</strong></p>
+                        <input type="radio" name="q1" value="a"> Algoritma<br>
+                        <input type="radio" name="q1" value="b"> Program<br>
+                        <input type="radio" name="q1" value="c"> Kode<br>
+                        <br>
+                        <button type="submit" class="btn" style="width: auto;">Kirim Jawaban</button>
+                    </form>`;
+                // Tambahkan JS untuk memproses kuis di sini
+            }
+            else if (page === 'latihan') {
+                contentArea.innerHTML = `
+                    <h3>💻 Latihan (Tools Eksternal)</h3>
+                    <p>Gunakan platform berikut untuk latihan mandiri. Ini adalah platform yang akan sering kita gunakan:</p>
+                    <button class="btn" onclick="openExternal('https://compute-it.toxicode.fr/')">Latihan Algoritma (Toxicode)</button>
+                    <br><br>
+                    <button class="btn" onclick="openExternal('https://code.org/hourofcode/overview')">Latihan (Hour of Code)</button>
+                    <br><br>
+                    <button class="btn" onclick="openExternal('https://blockly.games/')">Latihan (Blockly Games)</button>`;
+            }
+            else if (page === 'guru') {
+                 contentArea.innerHTML = `
+                    <h3>👩‍🏫 Portal Guru</h3>
+                    <p>Ini adalah area khusus untuk guru memonitor progres siswa, memberi nilai, dan feedback.</p>
+                    <p>Untuk saat ini, fitur ini memerlukan <strong>database dan sistem login backend</strong> yang aman (seperti Firebase Authentication) dan tidak bisa dijalankan hanya dengan HTML.</p>
+                    <button class="btn" style="background-color: #28a745;" onclick="alert('Login guru memerlukan pengaturan backend terpisah.')">Masuk Sebagai Guru (Demo)</button>`;
+            }
+        }
+
+        // 6. Fungsi helper untuk membuka link di tab baru
+        function openExternal(url) {
+            window.open(url, '_blank');
+        }
+
+        // 7. Fungsi untuk update waktu dan tanggal
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            datetimeDiv.textContent = now.toLocaleString('id-ID', options);
+        }
+
+    </script>
+</body>
+</html>
